@@ -1,65 +1,71 @@
 class Account {
-  constructor(username){
+  constructor(username) {
     this.username = username;
     this.transactions = [];
-    this.balance = 0;
   }
-  get balance(){
-    let balance = 0;
-    for (let transaction of this.transactions) {
-    	balance += transaction.value;
-    }
-    return balance;
+
+  get balance() {
+    return this.transactions.reduce((balance, transaction) => balance + transaction.value, 0);
   }
-  addTransaction(transaction){
-    this.transaction.push(transaction);
+
+  addTransaction(transaction) {
+    this.transactions.push(transaction);
   }
 }
 
 class Transaction {
-  constructor(amount, account){
-    this.amount = amount;
-    this.account = account;
+  constructor(transactionAmount, currentAccount) {
+    this.transactionAmount = transactionAmount;
+    this.account = currentAccount;
   }
-  commit(){
-    this.time = new Date();
+
+  commit() {
+    if (!this.isAllowed()) return false;
     this.account.addTransaction(this);
+    return true;
   }
 }
 
 class Withdrawal extends Transaction {
-  get value(){
-    return -this.amount;
+  get value() {
+    return -this.transactionAmount;
+  }
+
+  isAllowed() {
+    return this.account.balance - this.transactionAmount >= 0;
   }
 }
 
 class Deposit extends Transaction {
-  get value(){
-    return this.amount;
+  get value() {
+    return this.transactionAmount;
+  }
+
+  isAllowed() {
+    return true;
   }
 }
 
+// DRIVER CODE
+const myAccount = new Account("myUsername");
 
+console.log('Starting Account Balance: ', myAccount.balance);
 
+console.log('Attempting to withdraw even $1 should fail...');
+const withdrawal1 = new Withdrawal(1.00, myAccount);
+console.log('Commit result:', withdrawal1.commit());
+console.log('Account Balance: ', myAccount.balance);
 
+console.log('Depositing should succeed...');
+const deposit1 = new Deposit(9.99, myAccount);
+console.log('Commit result:', deposit1.commit());
+console.log('Account Balance: ', myAccount.balance);
 
-// DRIVER CODE BELOW
-// We use the code below to "drive" the application logic above and make sure it's working as expected
+console.log('Withdrawal for 9.99 should be allowed...');
+const withdrawal2 = new Withdrawal(9.99, myAccount);
+console.log('Commit result:', withdrawal2.commit());
 
-const myAccount = new Account("snow-patrol");
+console.log('Ending Account Balance: ', myAccount.balance);
+console.log("Looks like I'm broke again");
 
-t1 = new Withdrawal(50.25, myAccount);
-t1.commit();
-console.log('Transaction 1:', t1);
-
-t2 = new Withdrawal(9.99, myAccount);
-t2.commit();
-console.log('Transaction 2:', t2);
-
-t3 = new Deposit(120.00, myAccount);
-t3.commit();
-console.log('Transaction 3:', t3);
-
-console.log('Balance:', myAccount.balance);
-
-
+console.log('Account Transaction History: ', myAccount.transactions);
