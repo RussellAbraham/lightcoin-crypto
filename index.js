@@ -1,7 +1,18 @@
 class Account {
   constructor(username){
     this.username = username;
+    this.transactions = [];
     this.balance = 0;
+  }
+  get balance(){
+    let balance = 0;
+    for (let transaction of this.transactions) {
+    	balance += transaction.value;
+    }
+    return balance;
+  }
+  addTransaction(transaction){
+    this.transaction.push(transaction);
   }
 }
 
@@ -11,7 +22,8 @@ class Transaction {
     this.account = account;
   }
   commit(){
-    this.account.balance += this.value;
+    this.time = new Date();
+    this.account.addTransaction(this);
   }
 }
 
