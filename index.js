@@ -21,6 +21,12 @@ class Deposit {
   }
 }
 
+class Account {
+  constructor(username){
+    this.username = username;
+    this.balance = 0;
+  }
+}
 
 
 
@@ -40,3 +46,6 @@ console.log('Balance:', balance);
 t3 = new Deposit(120.00);
 t3.commit();
 console.log('Transaction 3:', t3);
+
+
+const myAccount = new Account("snow-patrol");
