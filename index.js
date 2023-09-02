@@ -1,4 +1,5 @@
-let balance = 500.00;
+// not needed
+// let balance = 500.00;
 
 class Withdrawal {
   constructor(amount, account) {
@@ -51,6 +52,6 @@ t3 = new Deposit(120.00, myAccount);
 t3.commit();
 console.log('Transaction 3:', t3);
 
-console.log('Balance:', balance);
+console.log('Balance:', myAccount.balance);
 
 
